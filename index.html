@@ -5,73 +5,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Custom Chat Button with Logo</title>
     <style>
-       
-        #customChatButton {
-            display: flex;
-            align-items: center;
-            background-color: #000;
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius:50px;
-            cursor: pointer;
-            font-size: 16px;
-            font-weight: bold;
-            bottom: 20px;
-            right: 20px;
-            z-index: 1000;
-            position: fixed;
-            transition: 0.3s ease;
-        }
+   #customChatButton {
+    display: flex;
+    align-items: center;
+    background: transparent; 
+    border: none;
+    cursor: pointer;
+    bottom: 20px;
+    right: 20px;
+    z-index: 1000;
+    position: fixed;
+    width: auto;
+    height: auto;
+}
 
-        #customChatButton img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-            border-radius: 50%;
-        }
+#customChatButton img {
+    width: 60px; 
+    height: auto;
+    border-radius: 50%; 
+    border: 3px solid black; 
+    box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); 
+    transition: transform 0.3s ease;
+}
 
+#customChatButton:hover img {
+    transform: scale(1.1); 
+}
 
-        #customChatButton:hover {
-           
-           
-            background-color: #000;
-            box-shadow: 5px 5px 5px #000;
-        }
     </style>
 </head>
 <body>
-    <h1>Welcome to Our QA Portal</h1>
+    <h1>Welcome to QA Portal!</h1>
     <p>Click the button below to chat with our Einstein Bot.</p>
 
-
-   <button id="customChatButton" onclick="bootstrapChat()">
-    <img src="https://turbostart.blob.core.windows.net/turbostart/hUOydNxWjXHu1646050108099.jpg" alt="Mahe Assist Logo" />
-    Hey I’m MAHE Assist
-</button>
-
-
-
+    <button id="customChatButton" onclick="bootstrapChat()">
+        <img src="https://turbostart.blob.core.windows.net/turbostart/hUOydNxWjXHu1646050108099.jpg" alt="Mahe Assist Logo" />
+    </button>
+    
 
 
     <script type='text/javascript' src='https://service.force.com/embeddedservice/5.0/esw.min.js'></script>
     <script type='text/javascript'>
         function bootstrapChat() {
-            embedded_svc.bootstrapEmbeddedService();
-        }
+    embedded_svc.bootstrapEmbeddedService(); // Open the chat
+    setTimeout(() => {
+        document.getElementById("customChatButton").style.display = "none"; 
+    }, 800); // Adjust the delay time (in milliseconds) if needed
+}
+
 
 
         var initESW = function(gslbBaseURL) {
             embedded_svc.settings.displayHelpButton = false;
             embedded_svc.settings.language = '';
-
-
-            embedded_svc.settings.defaultMinimizedText = 'Hey I’m Mahe Assist';
+    
             embedded_svc.settings.enabledFeatures = ['LiveAgent'];
             embedded_svc.settings.entryFeature = 'LiveAgent';
-
-
-           
+    
             embedded_svc.settings.chatbotAvatarImgURL = 'https://turbostart.blob.core.windows.net/turbostart/hUOydNxWjXHu1646050108099.jpg';
             embedded_svc.settings.offlineSupportMinimizedTextImageURL = 'https://turbostart.blob.core.windows.net/turbostart/hUOydNxWjXHu1646050108099.jpg';
 
@@ -91,7 +81,11 @@
 				isOfflineSupportEnabled: false
 			}
 		);
-	};
+		// Detect chat close and show the custom button again
+            embedded_svc.addEventHandler("afterDestroy", function() {
+                document.getElementById("customChatButton").style.display = "block"; 
+            });
+        };
 
 	if (!window.embedded_svc) {
 		var s = document.createElement('script');
